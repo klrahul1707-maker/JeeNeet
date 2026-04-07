@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE & NEET Aspirant Portal</title>
+    <script src="[https://polyfill.io/v3/polyfill.min.js?features=es6](https://polyfill.io/v3/polyfill.min.js?features=es6)"></script>
+    <script id="MathJax-script" async src="[https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js](https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js)"></script>
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #e8f0fe;
+            --jee-main-color: #202124;
+            --jee-adv-color: #d93025;
+            --neet-color: #1e8e3e;
+            --answered: #2d8c3c;
+            --not-answered: #d93025;
+            --marked: #7047eb;
+            --not-visited: #f1f3f4;
+            --text-main: #3c4043;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: var(--text-main);
+        }
+
+        /* Navigation [1, 2] */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+       .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+       .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+       .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+       .main-nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+       .main-nav a:hover {
+            background-color: var(--secondary-blue);
+            color: var(--primary-blue);
+        }
+
+        /* Tabs */
+       .portal-content {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+       .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+       .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #5f6368;
+            border-bottom: 3px solid transparent;
+        }
+
+       .tab-btn.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--primary-blue);
+        }
+
+       .tab-panel {
+            display: none;
+        }
+
+       .tab-panel.active {
+            display: block;
+        }
+
+        /* Resource Cards */
+       .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+       .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            transition: transform 0.2s;
+        }
+
+       .card:hover {
+            transform: translateY(-5px);
+        }
+
+       .card h3 { margin-top: 0; font-size: 18px; }
+       .tag {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+       .tag-physics { background: #e3f2fd; color: #1565c0; }
+       .tag-chem { background: #fce4ec; color: #c2185b; }
+       .tag-math { background: #f3e5f5; color: #7b1fa2; }
+
+        /* Mock Test UI Replica */
+       .test-interface {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+       .question-area {
+            padding: 30px;
+            border-right: 1px solid #ddd;
+        }
+
+       .palette-area {
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+       .timer {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            color: #d93025;
+            margin-bottom: 20px;
+        }
+
+       .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+       .q-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background-color: var(--not-visited);
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+       .q-circle.answered { background-color: var(--answered); color: white; border-radius: 0 0 15px 15px; }
+       .q-circle.not-answered { background-color: var(--not-answered); color: white; border-radius: 15px 15px 0 0; }
+       .q-circle.marked { background-color: var(--marked); color: white; border-radius: 50%; }
+
+       .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+       .btn {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+       .btn-primary { background: var(--primary-blue); color: white; border: none; }
+       .btn-save { background: #2d8c3c; color: white; border: none; }
+
+        @media (max-width: 768px) {
+           .test-interface { grid-template-columns: 1fr; }
+           .main-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="#" class="logo">EduPortal FREE</a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#jee-main">JEE Main</a></li>
+                <li><a href="#jee-adv">JEE Advanced</a></li>
+                <li><a href="#neet">NEET</a></li>
+                <li><a href="#mock-tests">Mock Tests</a></li>
+                <li><a href="#pyqs">Solved PYQs</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="portal-content">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'study-material')">Study Material</button>
+        <button class="tab-btn" onclick="openTab(event, 'mock-test-sim')">Practice Mock Test</button>
+    </div>
+
+    <div id="study-material" class="tab-panel active">
+        <h2>Chapter-wise Notes & Formula Cards</h2>
+        <div class="resource-grid">
+            <div class="card">
+                <span class="tag tag-physics">Physics</span>
+                <h3>Electrostatics</h3>
+                <p>Complete formula card with Gauss Law, Electric Flux, and Potential derivations.</p>
+                <button class="btn btn-primary">Download PDF</button>
+            </div>
+            <div class="card">
+                <span class="tag tag-chem">Chemistry</span>
+                <h3>Chemical Kinetics</h3>
+                <p>Revision notes on First Order Reactions and Arrhenius Equation.</p>
+                <button class="btn btn-primary">View Notes</button>
+            </div>
+            <div class="card">
+                <span class="tag tag-math">Maths</span>
+                <h3>Integral Calculus</h3>
+                <p>Formula sheet for standard integrals and substitution methods.</p>
+                <button class="btn btn-primary">Open Card</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mock-test-sim" class="tab-panel">
+        <div class="test-interface">
+            <div class="question-area">
+                <div style="display:flex; justify-content: space-between;">
+                    <h3>Question 1</h3>
+                    <div class="timer" id="test-timer">03:00:00</div>
+                </div>
+                <hr>
+                <div id="question-content">
+                    <p>What is the horizontal range \(R\) of a projectile fired with an initial velocity \(u\) at an angle \(\theta\) with the horizontal?</p>
+                    <div style="margin: 20px 0;">
+                        <input type="radio" name="q1" id="a1"> <label for="a1">\(R = \frac{u^2 \sin \theta}{g}\)</label><br><br>
+                        <input type="radio" name="q1" id="a2"> <label for="a2">\(R = \frac{u^2 \sin 2\theta}{g}\)</label><br><br>
+                        <input type="radio" name="q1" id="a3"> <label for="a3">\(R = \frac{u \sin 2\theta}{2g}\)</label><br><br>
+                        <input type="radio" name="q1" id="a4"> <label for="a4">\(R = \frac{u^2 \cos 2\theta}{g}\)</label>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-save" onclick="updatePalette(1, 'answered')">Save & Next</button>
+                    <button class="btn" onclick="updatePalette(1, 'not-answered')">Clear Response</button>
+                    <button class="btn" style="background:#7047eb; color:white;" onclick="updatePalette(1, 'marked')">Mark for Review</button>
+                </div>
+            </div>
+
+            <div class="palette-area">
+                <h4>Question Palette</h4>
+                <div class="palette-grid">
+                    <div class="q-circle" id="p1">1</div>
+                    <div class="q-circle" id="p2">2</div>
+                    <div class="q-circle" id="p3">3</div>
+                    <div class="q-circle" id="p4">4</div>
+                    <div class="q-circle" id="p5">5</div>
+                    <div class="q-circle" id="p6">6</div>
+                    <div class="q-circle" id="p7">7</div>
+                    <div class="q-circle" id="p8">8</div>
+                    <div class="q-circle" id="p9">9</div>
+                    <div class="q-circle" id="p10">10</div>
+                </div>
+                <div style="margin-top: 20px; font-size: 12px;">
+                    <p><span style="color:var(--answered)">■</span> Answered</p>
+                    <p><span style="color:var(--not-answered)">■</span> Not Answered</p>
+                    <p><span style="color:var(--marked)">●</span> Marked for Review</p>
+                    <p><span style="color:var(--not-visited)">■</span> Not Visited</p>
+                </div>
+                <button class="btn btn-primary" style="width:100%; margin-top:20px;">Submit Test</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Tab switching logic
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-panel");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // Question Palette logic
+    function updatePalette(qNum, status) {
+        const item = document.getElementById('p' + qNum);
+        item.className = 'q-circle ' + status;
+    }
+
+    // Timer logic
+    let time = 3 * 60 * 60; // 3 hours
+    const timerEl = document.getElementById('test-timer');
+    setInterval(() => {
+        let hours = Math.floor(time / 3600);
+        let mins = Math.floor((time % 3600) / 60);
+        let secs = time % 60;
+        timerEl.innerText = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        if (time > 0) time--;
+    }, 1000);
+</script>
+
+</body>
+</html>
